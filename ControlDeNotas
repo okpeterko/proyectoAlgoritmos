@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Curso {
+    string nombre;
+    vector<double> notasParciales;
+    double notaFinal;
+    string estado;
+
+    // Método para calcular la nota final a partir de las notas parciales
+    void calcularNotaFinal() {
+        double suma = 0.0;
+        for (double nota : notasParciales) {
+            suma += nota;
+        }
+        notaFinal = suma / notasParciales.size();
+        estado = (notaFinal >= 10.5) ? "Aprobado" : "Reprobado";
+    }
+
+    // Método para mostrar la información del curso
+    void mostrarInfo() const {
+        cout << "Curso: " << nombre << endl;
+        cout << "Notas parciales: ";
+        for (double nota : notasParciales) {
+            cout << nota << " ";
+        }
+        cout << endl;
+        cout << "Nota final: " << notaFinal << endl;
+        cout << "Estado: " << estado << endl;
+    }
+};
+
+int main() {
+    int numCursos;
+    cout << "Ingrese el numero de cursos: ";
+    cin >> numCursos;
+
+    vector<Curso> cursos(numCursos);
+
+    // Registrar datos de cada curso
+    for (int i = 0; i < numCursos; i++) {
+        cout << "\nIngrese el nombre del curso " << i + 1 << ": ";
+        cin.ignore();  // Ignorar el salto de línea pendiente
+        getline(cin, cursos[i].nombre);
+
+        int numNotas;
+        cout << "Ingrese el numero de notas parciales para el curso " << cursos[i].nombre << ": ";
+        cin >> numNotas;
+
+        cursos[i].notasParciales.resize(numNotas);
+        for (int j = 0; j < numNotas; j++) {
+            cout << "Ingrese la nota parcial " << j + 1 << ": ";
+            cin >> cursos[i].notasParciales[j];
+        }
+
+        cursos[i].calcularNotaFinal();
+    }
+
+    // Mostrar la información de todos los cursos
+    cout << "\n--- Información de los cursos ---\n";
+    for (const Curso& curso : cursos) {
+        curso.mostrarInfo();
+        cout << endl;
+    }
+
+    return 0;
+}
